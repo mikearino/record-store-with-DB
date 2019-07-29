@@ -1,7 +1,5 @@
-require 'rspec'
-require 'song'
-require 'album'
-require 'pry'
+
+require 'spec_helper'
 
 describe '#Song' do
 
@@ -10,6 +8,17 @@ describe '#Song' do
     Song.clear
     @album = Album.new({:name => "Giant Steps", :id => nil})
     @album.save()
+  end
+
+  describe('#delete') do
+    it("deletes all songs belonging to a deleted album") do
+      album = Album.new({:name => "A Love Supreme", :id => nil})
+      album.save()
+      song = Song.new({:name => "Naima", :album_id => album.id, :id => nil})
+      song.save()
+      album.delete()
+      expect(Song.find(song.id)).to(eq(nil))
+    end
   end
 
   describe('#==') do
